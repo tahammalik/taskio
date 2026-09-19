@@ -1,7 +1,7 @@
 from fastapi import HTTPException
 from app.core.db import db_dependency
-from app.models.invitation import Invitation
-from app.models.user import User
+from app.models.invitation_model import Invitation
+from app.models.user_model import User
 from app.core.logging_config import get_logger
 
 logger = get_logger(__name__)

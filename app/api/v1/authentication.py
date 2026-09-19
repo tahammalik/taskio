@@ -8,7 +8,6 @@ from fastapi import APIRouter, Depends, HTTPException, status,Response,Request
 from fastapi.security import OAuth2PasswordRequestForm
 from app.core.db import db_dependency
 from app.core.dependencies import get_current_user
-from app.core.exceptions import EmailAlreadyExistsError
 from app.core.logging_config import get_logger
 from app.core.security import (create_access_token,
                                hash_password,

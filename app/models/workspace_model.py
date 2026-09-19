@@ -25,13 +25,14 @@ class Workspace(Base):
     users = relationship('User', foreign_keys='User.workspace_id', back_populates='workspace')
     teams = relationship('Team', foreign_keys='Team.workspace_id', back_populates='workspace')
     invitations = relationship("Invitation", back_populates="workspace", cascade="all, delete-orphan")
+    related_workspace = relationship('WorkspaceMembership', back_populates='user_workspace')
 
 class WorkspaceMembership(Base):
     __tablename__ = 'workspacemembership'
 
     id: Mapped[int] = mapped_column(primary_key=True,index=True)
-    user_id: Mapped[int] = mapped_column(Integer,ForeignKey('user.id'),nullable=False)
-    workspace_id: Mapped[int] = mapped_column(Integer,ForeignKey('Workspace.id'), nullable=False)
+    user_id: Mapped[int] = mapped_column(Integer,ForeignKey('users.id'),nullable=False)
+    workspace_id: Mapped[int] = mapped_column(Integer,ForeignKey('workspaces.id'), nullable=False)
     role: Mapped[str] = mapped_column(String, nullable=False)
     created_at: Mapped[datetime] = mapped_column(DateTime, default=func.now()) 
 

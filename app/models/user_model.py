@@ -18,7 +18,7 @@ class User(Base):
     created_at: Mapped[datetime] = mapped_column(DateTime, default=func.now())
     workspace_id: Mapped[Optional[int]] = mapped_column(Integer, ForeignKey('workspaces.id'), default=None)
     team_id: Mapped[Optional[int]] = mapped_column(Integer, default=None)
-
+    # Relations
     workspace = relationship('Workspace', foreign_keys=[workspace_id], back_populates='users')
     created_tasks = relationship('Task', foreign_keys='Task.created_by', back_populates='creator_manager')
     assigned_tasks = relationship('Task', foreign_keys='Task.assign_to', back_populates='assigned_employee')
@@ -26,5 +26,5 @@ class User(Base):
     teams = relationship('Team', secondary='team_members', back_populates='members')
     project_history = relationship('ProjectHistory', back_populates='user')
     project_initiator = relationship('Project',back_populates='initiator')
-    workspacemembar = relationship('WorkspaceManager',back_populates='user')
-    related_workspace = relationship('WorkspaceManager',back_populates='user_worksapce')
+    workspacemembar = relationship('WorkspaceMembership',back_populates='user')
+
