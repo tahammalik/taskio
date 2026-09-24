@@ -1,7 +1,7 @@
 from datetime import datetime
 from typing import Optional
 
-from sqlalchemy import Boolean, DateTime, ForeignKey, Integer, String, UniqueConstraint, func
+from sqlalchemy import Boolean, DateTime, ForeignKey, Integer, String, UniqueConstraint, func,Text
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.core.db import Base
@@ -34,3 +34,17 @@ class Team(Base):
     tasks = relationship('Task', back_populates='team', cascade='all, delete-orphan')
     projects = relationship('Project', secondary='project_teams', back_populates='teams')
     members = relationship('User', secondary='team_members', back_populates='teams')
+    history = relationship()
+
+class TeamHistory(Base):
+
+    id: Mapped[int] = mapped_column(primary_key=True, index=True)
+    team_id: Mapped[int] = mapped_column(Integer, ForeignKey('teams.id', ondelete='CASCADE'), nullable=False, index=True)
+    changed_by: Mapped[int] = mapped_column(Integer, ForeignKey('users.id'), nullable=False)
+    field_name: Mapped[str] = mapped_column(String(50), nullable=False)
+    old_value: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
+    new_value: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
+    changed_at: Mapped[datetime] = mapped_column(DateTime, default=func.now(), nullable=False, index=True)
+
+    team = relationship('Team',back_populates='history')
+    user = relationship('User', back_populates='team_history')

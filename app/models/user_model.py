@@ -27,4 +27,4 @@ class User(Base):
     project_history = relationship('ProjectHistory', back_populates='user')
     project_initiator = relationship('Project',back_populates='initiator')
     workspacemembar = relationship('WorkspaceMembership',back_populates='user')
-
+    team_history = relationship('TeamHistory',back_populates='user')
