@@ -158,3 +158,14 @@ class TeamService:
                 )
         for key,value in update_dict.items():
             setattr(team,key,value)
+
+        try:
+            for entry in history_entries:
+                await db.add(entry)
+            
+            await db.commit()
+
+        except Exception as e:
+                await db.rollback()
+                logger.error(f"DB ERROR: {e}")
+                raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR)      
